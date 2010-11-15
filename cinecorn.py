@@ -109,7 +109,6 @@ class TestImdb:
 
 #TODO:
 #
-#   imdb search on term
 #   add movie to db
 #   add people to db
 #   add rel_directs to db
