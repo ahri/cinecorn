@@ -5,6 +5,7 @@ static HTML to use on the Popcorn Hour interface.
 GPLv3
 """
 from sqlite3 import connect, OperationalError
+from imdb import IMDb
 
 class TestSchema:
 
@@ -189,6 +190,37 @@ class FileSystem:
         for filename in files:
             search, _ = filename.rsplit('.', 1)
             self.searches.append(search)
+
+class Imdb:
+
+    """Interact with IMDB"""
+
+    mid = None
+    title = None
+    year = None
+    actors = {}
+    directors = {}
+    genres = None
+
+    def __init__(self, search):
+        imdb = IMDb(loggingLevel='warn')
+        mov = imdb.search_movie(search)[0]
+
+        self.mid = mov.getID()
+        self.title = mov.smartCanonicalTitle()
+
+        data = imdb.get_movie_main(mov.getID()).items()[1][1]
+
+        self.year = data['year']
+
+        for role, lookup in [('cast', self.actors),
+                             ('director', self.directors)]:
+            for person in data[role]:
+                lookup[person.getID()] = person.data['name']
+
+        self.genres = data['genres']
+
+
 
 
 
