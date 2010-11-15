@@ -22,7 +22,7 @@ class TestSchema:
             self.conn.execute('SELECT count(*) FROM movies')
             assert False, "Shouldn't get here"
         except OperationalError:
-            assert True, "movies table doesn't exist"
+            assert True, "'movies' table doesn't exist"
 
         Schema(self.conn)
         assert self.conn.execute('SELECT count(*) FROM movies'), \
@@ -41,6 +41,7 @@ class TestFilesystem:
     filesys = None
 
     def __init__(self):
+        """Create a filesystem object"""
         self.filesys = FileSystem(['Aliens.avi', 'Terminator.mkv'])
 
     def test_get_searches(self):
