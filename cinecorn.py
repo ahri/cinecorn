@@ -59,33 +59,52 @@ class TestImdb:
         """Set up a usable Imdb object"""
         self.imdb = Imdb("Lost in Translation")
 
+    def test_mid(self):
+        """Ensure an expected title"""
+        assert self.imdb.mid == "0335266"
+
     def test_title(self):
         """Ensure an expected title"""
         assert self.imdb.title == "Lost in Translation"
 
-    def test_people(self):
-        """Test the structure of the people variable"""
-        assert isinstance(self.imdb.people, list), """We want a list of
-            id, role, name tuples"""
-        pid, role, name = self.imdb.people[0]
+    def test_year(self):
+        """Ensure an expected title"""
+        assert self.imdb.year == 2003
+
+    def test_actors(self):
+        """Test the structure of the actors variable"""
+        assert isinstance(self.imdb.actors, dict), """We want a dict of
+            id => name pairs"""
+        pid = self.imdb.actors.keys()[0]
+        name = self.imdb.actors.values()[0]
 
         int(pid)
 
         try:
-            int(role)
+            int(name)
             assert False, "Should not occur"
-        except:
+        except ValueError:
             assert True, "This should be a normal string"
+
+    def test_directors(self):
+        """Test the structure of the directors variable"""
+        assert isinstance(self.imdb.directors, dict), """We want a dict of
+            id => name pairs"""
+        pid = self.imdb.directors.keys()[0]
+        name = self.imdb.directors.values()[0]
+
+        int(pid)
 
         try:
             int(name)
             assert False, "Should not occur"
-        except:
+        except ValueError:
             assert True, "This should be a normal string"
 
     def test_genres(self):
         """Test the structure of the genres variable"""
         assert isinstance(self.imdb.genres, list), "A list of genres"
+        assert self.imdb.genres == ['Drama', 'Romance']
 
 #TODO:
 #
