@@ -57,11 +57,7 @@ class TestImdb:
 
     def __init__(self):
         """Set up a usable Imdb object"""
-        self.mdb = Imdb("Lost in Translation")
-
-    def test_search(self):
-        """Make sure we get a valid Imdb object"""
-        assert self.imdb
+        self.imdb = Imdb("Lost in Translation")
 
     def test_title(self):
         """Ensure an expected title"""
