@@ -49,6 +49,48 @@ class TestFilesystem:
         assert len(self.filesys.searches) == 2
         assert self.filesys.searches == ['Aliens', 'Terminator']
 
+class TestImdb:
+
+    """Test IMDB search"""
+
+    imdb = None
+
+    def __init__(self):
+        """Set up a usable Imdb object"""
+        self.mdb = Imdb("Lost in Translation")
+
+    def test_search(self):
+        """Make sure we get a valid Imdb object"""
+        assert self.imdb
+
+    def test_title(self):
+        """Ensure an expected title"""
+        assert self.imdb.title == "Lost in Translation"
+
+    def test_people(self):
+        """Test the structure of the people variable"""
+        assert isinstance(self.imdb.people, list), """We want a list of
+            id, role, name tuples"""
+        pid, role, name = self.imdb.people[0]
+
+        int(pid)
+
+        try:
+            int(role)
+            assert False, "Should not occur"
+        except:
+            assert True, "This should be a normal string"
+
+        try:
+            int(name)
+            assert False, "Should not occur"
+        except:
+            assert True, "This should be a normal string"
+
+    def test_genres(self):
+        """Test the structure of the genres variable"""
+        assert isinstance(self.imdb.genres, list), "A list of genres"
+
 #TODO:
 #
 #   imdb search on term
