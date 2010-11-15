@@ -56,6 +56,10 @@ class TestFilesystem:
 #   add rel_directs to db
 #   add rel_acts to db
 #   add rel_genres to db
+#   download box image
+#   generate movie page
+#   generate movie listing page
+#   generate index page
 
 class Schema:
 
