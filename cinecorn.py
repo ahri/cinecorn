@@ -162,7 +162,7 @@ class Schema:
 
 class FileSystem:
 
-    """ Interact with the filesystem """
+    """Interact with the filesystem"""
 
     searches = []
 
