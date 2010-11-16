@@ -4,6 +4,7 @@ static HTML to use on the Popcorn Hour interface.
 
 GPLv3
 """
+import re
 from sqlite3 import connect, OperationalError
 from imdb import IMDb
 
@@ -78,19 +79,35 @@ class TestImdb:
 
     def __init__(self):
         """Set up a usable Imdb object"""
-        self.imdb = Imdb("Lost in Translation")
+        self.imdb = Imdb("The Good, the Bad and the Ugly")
 
     def test_mid(self):
         """Ensure an expected title"""
-        assert self.imdb.mid == "0335266"
+        assert self.imdb.mid == "0060196"
 
     def test_title(self):
         """Ensure an expected title"""
-        assert self.imdb.title == "Lost in Translation"
+        assert self.imdb.title == "Il buono, il brutto, il cattivo."
+
+    def test_idx(self):
+        """Ensure an expected index (first char)"""
+        assert self.imdb.idx == "G"
 
     def test_year(self):
         """Ensure an expected title"""
-        assert self.imdb.year == 2003
+        assert self.imdb.year == 1966
+
+    def test_runtime(self):
+        """Ensure an expected runtime"""
+        assert self.imdb.runtime == 161
+
+    def test_rating(self):
+        """Ensure an expected rating"""
+        assert self.imdb.rating == 9.0
+
+    def test_summary(self):
+        """Ensure an expected summary"""
+        assert self.imdb.summary == "A bounty hunting scam joins two men in an uneasy alliance against a third in a race to find a fortune in gold buried in a remote cemetery."
 
     def test_actors(self):
         """Test the structure of the actors variable"""
@@ -125,7 +142,7 @@ class TestImdb:
     def test_genres(self):
         """Test the structure of the genres variable"""
         assert isinstance(self.imdb.genres, list), "A list of genres"
-        assert self.imdb.genres == ['Drama', 'Romance']
+        assert self.imdb.genres == ['Adventure', 'Western']
 
 #TODO:
 #
@@ -216,7 +233,11 @@ class Imdb:
 
     mid = None
     title = None
+    idx = None
     year = None
+    runtime = None
+    rating = None
+    summary = None
     actors = {}
     directors = {}
     genres = None
@@ -226,11 +247,16 @@ class Imdb:
         mov = imdb.search_movie(search)[0]
 
         self.mid = mov.getID()
-        self.title = mov.smartCanonicalTitle()
 
         data = imdb.get_movie_main(mov.getID()).items()[1][1]
 
+        self.title = data['title']
+        self.idx = re.sub("^(The|A|An|Of|At|On|It's|La|Le|Les|Dos|Los|Der) ",
+                          "", search)[0].upper()
         self.year = data['year']
+        self.runtime = int(data['runtimes'][0])
+        self.rating = data['rating']
+        self.summary = data['plot outline']
 
         for role, lookup in [('cast', self.actors),
                              ('director', self.directors)]:
