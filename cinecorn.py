@@ -228,9 +228,9 @@ class FileSystem:
 
     """Interact with the filesystem"""
 
-    searches = []
-
     def __init__(self, files):
+        self.searches = []
+
         for filename in files:
             search, _ = filename.rsplit('.', 1)
             self.searches.append(search)
@@ -243,18 +243,20 @@ class Imdb:
     THUMB_X =  95
     IMAGE_X = 300
 
-    mid = None
-    title = None
-    idx = None
-    year = None
-    runtime = None
-    rating = None
-    summary = None
-    actors = {}
-    directors = {}
-    genres = None
-
     def __init__(self, search):
+        self.mid = None
+        self.title = None
+        self.idx = None
+        self.year = None
+        self.runtime = None
+        self.rating = None
+        self.summary = None
+        self.url_thumb = None
+        self.url_image = None
+        self.actors = {}
+        self.directors = {}
+        self.genres = None
+
         imdb = IMDb(loggingLevel='warn')
         mov = imdb.search_movie(search)[0]
 
