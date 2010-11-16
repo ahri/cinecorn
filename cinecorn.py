@@ -229,6 +229,7 @@ class FileSystem:
     """Interact with the filesystem"""
 
     def __init__(self, files):
+        """Set up the searches based upon a list of files"""
         self.searches = []
 
         for filename in files:
@@ -244,6 +245,7 @@ class Imdb:
     IMAGE_X = 300
 
     def __init__(self, search):
+        """Setup up variables and initialize with data from IMDb"""
         self.mid = None
         self.title = None
         self.idx = None
