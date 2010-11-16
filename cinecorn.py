@@ -44,15 +44,15 @@ class TestSchema:
         assert False
 
     def test_add_rel_acts(self):
-        """Can we an 'acts' relationshipto the DB?"""
+        """Can we add an 'acts' relationship to the DB?"""
         assert False
 
     def test_add_rel_directs(self):
-        """Can we an 'directs' relationshipto the DB?"""
+        """Can we add a 'directs' relationship to the DB?"""
         assert False
 
     def test_add_rel_genre(self):
-        """Can we an 'genre' relationshipto the DB?"""
+        """Can we add a 'genre' relationship to the DB?"""
         assert False
 
 class TestFilesystem:
