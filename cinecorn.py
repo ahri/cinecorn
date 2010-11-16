@@ -35,6 +35,26 @@ class TestSchema:
         self.conn.execute('SELECT count(*) FROM movies')
         Schema(self.conn)
 
+    def test_add_movie(self):
+        """Can we add a movie to the DB?"""
+        assert False
+
+    def test_add_person(self):
+        """Can we add a person to the DB?"""
+        assert False
+
+    def test_add_rel_acts(self):
+        """Can we an 'acts' relationshipto the DB?"""
+        assert False
+
+    def test_add_rel_directs(self):
+        """Can we an 'directs' relationshipto the DB?"""
+        assert False
+
+    def test_add_rel_genre(self):
+        """Can we an 'genre' relationshipto the DB?"""
+        assert False
+
 class TestFilesystem:
 
     """Test the Filesystem class"""
