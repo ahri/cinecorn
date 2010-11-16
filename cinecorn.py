@@ -113,7 +113,7 @@ class TestImdb:
 #   add people to db
 #   add rel_directs to db
 #   add rel_acts to db
-#   add rel_genres to db
+#   add rel_genre to db
 #   download box image
 #   generate movie page
 #   generate movie listing page
