@@ -38,23 +38,23 @@ class TestSchema:
 
     def test_add_movie(self):
         """Can we add a movie to the DB?"""
-        assert False
+        assert False, "Dummy"
 
     def test_add_person(self):
         """Can we add a person to the DB?"""
-        assert False
+        assert False, "Dummy"
 
     def test_add_rel_acts(self):
         """Can we add an 'acts' relationship to the DB?"""
-        assert False
+        assert False, "Dummy"
 
     def test_add_rel_directs(self):
         """Can we add a 'directs' relationship to the DB?"""
-        assert False
+        assert False, "Dummy"
 
     def test_add_rel_genre(self):
         """Can we add a 'genre' relationship to the DB?"""
-        assert False
+        assert False, "Dummy"
 
 class TestFilesystem:
 
@@ -68,8 +68,10 @@ class TestFilesystem:
 
     def test_get_searches(self):
         """Should get a nice list of search terms from the filesystem"""
-        assert len(self.filesys.searches) == 2
-        assert self.filesys.searches == ['Aliens', 'Terminator']
+        assert len(self.filesys.searches) == 2, \
+            "Expect the same number of items as we put in"
+        assert self.filesys.searches == ['Aliens', 'Terminator'], \
+            "Expect searches to be the inputs without the suffixes"
 
 class TestImdb:
 
@@ -83,44 +85,53 @@ class TestImdb:
 
     def test_mid(self):
         """Ensure an expected title"""
-        assert self.imdb.mid == "0060196"
+        assert self.imdb.mid == "0060196", "Referenced MID"
 
     def test_title(self):
         """Ensure an expected title"""
-        assert self.imdb.title == "Il buono, il brutto, il cattivo."
+        assert self.imdb.title == "Il buono, il brutto, il cattivo.", \
+            "Referenced title"
 
     def test_idx(self):
         """Ensure an expected index (first char)"""
-        assert self.imdb.idx == "G"
+        assert self.imdb.idx == "G", \
+            "First letter of search after removing common prefixes"
 
     def test_year(self):
         """Ensure an expected title"""
-        assert self.imdb.year == 1966
+        assert self.imdb.year == 1966, "Referenced year"
 
     def test_runtime(self):
         """Ensure an expected runtime"""
-        assert self.imdb.runtime == 161
+        assert self.imdb.runtime == 161, "Referenced runtime"
 
     def test_rating(self):
         """Ensure an expected rating"""
-        assert self.imdb.rating == 9.0
+        assert self.imdb.rating == 9.0, "Referenced rating"
 
     def test_summary(self):
         """Ensure an expected summary"""
-        assert self.imdb.summary == "A bounty hunting scam joins two men in an uneasy alliance against a third in a race to find a fortune in gold buried in a remote cemetery."
+        assert self.imdb.summary == "A bounty hunting scam joins two men in" \
+            + " an uneasy alliance against a third in a race to find a" \
+            + " fortune in gold buried in a remote cemetery.", \
+            "Referenced summary"
 
     def test_url_thumb(self):
         """Ensure an expected thumb url"""
-        assert self.imdb.url_thumb == "http://ia.media-imdb.com/images/M/MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX95.jpg"
+        assert self.imdb.url_thumb == "http://ia.media-imdb.com/images/M/" \
+            + "MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX95.jpg", \
+            "Referenced thumbnail, with specific width set"
 
     def test_url_image(self):
         """Ensure an expected image url"""
-        assert self.imdb.url_image == "http://ia.media-imdb.com/images/M/MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX300.jpg"
+        assert self.imdb.url_image == "http://ia.media-imdb.com/images/M/" \
+            + "MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX300.jpg", \
+            "Reference image with specific width set"
 
     def test_actors(self):
         """Test the structure of the actors variable"""
-        assert isinstance(self.imdb.actors, dict), """We want a dict of
-            id => name pairs"""
+        assert isinstance(self.imdb.actors, dict), \
+            "We want a dict of id => name pairs"
         pid = self.imdb.actors.keys()[0]
         name = self.imdb.actors.values()[0]
 
@@ -134,8 +145,8 @@ class TestImdb:
 
     def test_directors(self):
         """Test the structure of the directors variable"""
-        assert isinstance(self.imdb.directors, dict), """We want a dict of
-            id => name pairs"""
+        assert isinstance(self.imdb.directors, dict), \
+            "We want a dict of id => name pairs"
         pid = self.imdb.directors.keys()[0]
         name = self.imdb.directors.values()[0]
 
@@ -150,7 +161,8 @@ class TestImdb:
     def test_genres(self):
         """Test the structure of the genres variable"""
         assert isinstance(self.imdb.genres, list), "A list of genres"
-        assert self.imdb.genres == ['Adventure', 'Western']
+        assert self.imdb.genres == ['Adventure', 'Western'], \
+            "Referenced genres"
 
 #TODO:
 #
@@ -170,7 +182,6 @@ class Schema:
 
     def __init__(self, conn):
         """Set up the schema"""
-
         cur = conn.cursor()
         try:
             cur.execute("""
