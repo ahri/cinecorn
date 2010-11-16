@@ -109,6 +109,14 @@ class TestImdb:
         """Ensure an expected summary"""
         assert self.imdb.summary == "A bounty hunting scam joins two men in an uneasy alliance against a third in a race to find a fortune in gold buried in a remote cemetery."
 
+    def test_url_thumb(self):
+        """Ensure an expected thumb url"""
+        assert self.imdb.url_thumb == "http://ia.media-imdb.com/images/M/MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX95.jpg"
+
+    def test_url_image(self):
+        """Ensure an expected image url"""
+        assert self.imdb.url_image == "http://ia.media-imdb.com/images/M/MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX300.jpg"
+
     def test_actors(self):
         """Test the structure of the actors variable"""
         assert isinstance(self.imdb.actors, dict), """We want a dict of
@@ -231,6 +239,10 @@ class Imdb:
 
     """Interact with IMDB"""
 
+    API1_PATTERN = "%s_SX%d.jpg"
+    THUMB_X =  95
+    IMAGE_X = 300
+
     mid = None
     title = None
     idx = None
@@ -258,6 +270,8 @@ class Imdb:
         self.rating = data['rating']
         self.summary = data['plot outline']
 
+        self.url_thumb, self.url_image = self.image_urls(data['cover url'])
+
         for role, lookup in [('cast', self.actors),
                              ('director', self.directors)]:
             for person in data[role]:
@@ -265,8 +279,14 @@ class Imdb:
 
         self.genres = data['genres']
 
+    def image_urls(self, url):
+        """Given an IMDB image url return two for pre-set sizes"""
+        match = re.match(r"http://.*\._V1\.", url)
+        if not match:
+            return None, None
 
-
+        return self.API1_PATTERN % (match.group(0), self.THUMB_X), \
+               self.API1_PATTERN % (match.group(0), self.IMAGE_X)
 
 
 # NOTES
