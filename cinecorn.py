@@ -303,16 +303,3 @@ class Imdb:
 #class Filesystem:
 #    def __init__():
 #os.listdir(MOVIE_DIR)
-#
-#ia = IMDb()
-#m = ia.search_movie(filename)[0]
-#m.smartCanonicalTitle
-#m.getID()
-#
-#ia.get_movie_main(m.getID()).items()[1][1].keys()
-#
-#p = data['cast'][0]
-#p.getID()
-#p.data['name']
-#
-
