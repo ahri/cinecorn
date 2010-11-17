@@ -182,7 +182,8 @@ class Schema:
 
     def __init__(self, conn):
         """Set up the schema"""
-        cur = conn.cursor()
+        self.conn = conn
+        cur = self.conn.cursor()
         try:
             cur.execute("""
             CREATE TABLE movies (
@@ -230,10 +231,10 @@ class Schema:
             );
             """)
 
-            conn.commit()
+            self.conn.commit()
 
         except OperationalError:
-            conn.rollback()
+            self.conn.rollback()
 
 class FileSystem:
 
