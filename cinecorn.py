@@ -38,23 +38,69 @@ class TestSchema:
 
     def test_add_movie(self):
         """Can we add a movie to the DB?"""
-        assert False, "Dummy"
+        schema = Schema(self.conn)
+        schema.add_movie("The Adam.avi", "A", "001", "foo_small.jpg",
+            "foo_big.jpg", "The Adam", 120, 1983, 7.8, "An autobiography.")
+        assert self.conn.execute("""SELECT count(1)
+                                    FROM movies
+                                    WHERE filename=?
+                                    AND idx=?
+                                    AND mid=?
+                                    AND thumb_filename=?
+                                    AND image_filename=?
+                                    AND title=?
+                                    AND runtime=?
+                                    AND year=?
+                                    AND rating=?
+                                    AND summary=?""",
+            ("The Adam.avi", "A", "001", "foo_small.jpg", "foo_big.jpg",
+                "The Adam", 120, 1983, 7.8, "An autobiography.")).\
+                    fetchone() == (1,), \
+            "Check that the values are in the DB as expected"
 
     def test_add_person(self):
         """Can we add a person to the DB?"""
-        assert False, "Dummy"
+        schema = Schema(self.conn)
+        schema.add_person("002", "Adam Piper")
+        assert self.conn.execute("""SELECT count(1)
+                                    FROM people
+                                    WHERE pid=?
+                                    AND name=?""",
+            ("002", "Adam Piper")).fetchone() == (1,), \
+            "Check that the values are in the DB as expected"
 
     def test_add_rel_acts(self):
         """Can we add an 'acts' relationship to the DB?"""
-        assert False, "Dummy"
+        schema = Schema(self.conn)
+        schema.add_rel_acts("002", "001")
+        assert self.conn.execute("""SELECT count(1)
+                                    FROM rel_acts
+                                    WHERE pid=?
+                                    AND mid=?""",
+            ("002", "001")).fetchone() == (1,), \
+            "Check that the values are in the DB as expected"
 
     def test_add_rel_directs(self):
         """Can we add a 'directs' relationship to the DB?"""
-        assert False, "Dummy"
+        schema = Schema(self.conn)
+        schema.add_rel_directs("002", "001")
+        assert self.conn.execute("""SELECT count(1)
+                                    FROM rel_directs
+                                    WHERE pid=?
+                                    AND mid=?""",
+            ("002", "001")).fetchone() == (1,),\
+            "Check that the values are in the DB as expected"
 
     def test_add_rel_genre(self):
         """Can we add a 'genre' relationship to the DB?"""
-        assert False, "Dummy"
+        schema = Schema(self.conn)
+        schema.add_rel_genre("001", "Biography")
+        assert self.conn.execute("""SELECT count(1)
+                                    FROM rel_genres
+                                    WHERE mid=?
+                                    AND genre=?""",
+            ("001", "Biography")).fetchone() == (1,), \
+            "Check that the values are in the DB as expected"
 
 class TestFilesystem:
 
@@ -166,11 +212,6 @@ class TestImdb:
 
 #TODO:
 #
-#   add movie to db
-#   add people to db
-#   add rel_directs to db
-#   add rel_acts to db
-#   add rel_genre to db
 #   download box image
 #   generate movie page
 #   generate movie listing page
@@ -235,6 +276,50 @@ class Schema:
 
         except OperationalError:
             self.conn.rollback()
+
+    def _query(self, query, bindings=None):
+        """Execute a single query and return True or False if dupe"""
+        try:
+            self.conn.execute(query, bindings)
+            return True
+        except OperationalError:
+            self.conn.rollback()
+            return False
+
+    def add_movie(self, filename, idx, mid, thumb_filename, image_filename,
+                  title, runtime, year, rating, summary):
+        """Add a movie to the database"""
+        return self._query("""INSERT INTO movies (filename, idx, mid,
+                                  thumb_filename, image_filename, title,
+                                  runtime, year, rating, summary)
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                              (filename, idx, mid, thumb_filename,
+                                  image_filename, title, runtime, year,
+                                  rating, summary))
+
+    def add_person(self, pid, name):
+        """Add a person to the database"""
+        return self._query("""INSERT INTO people (pid, name)
+                              VALUES (?, ?)""",
+                              (pid, name))
+
+    def add_rel_directs(self, pid, mid):
+        """Add a "directs" relationship to the database"""
+        return self._query("""INSERT INTO rel_directs (pid, mid)
+                              VALUES (?, ?)""",
+                              (pid, mid))
+
+    def add_rel_acts(self, pid, mid):
+        """Add an "acts" relationship to the database"""
+        return self._query("""INSERT INTO rel_acts (pid, mid)
+                              VALUES (?, ?)""",
+                              (pid, mid))
+
+    def add_rel_genre(self, mid, genre):
+        """Add a "genre" relationship to the database"""
+        return self._query("""INSERT INTO rel_genres (mid, genre)
+                              VALUES (?, ?)""",
+                              (mid, genre))
 
 class FileSystem:
 
