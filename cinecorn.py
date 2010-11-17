@@ -5,8 +5,10 @@ static HTML to use on the Popcorn Hour interface.
 GPLv3
 """
 import re
+import os
 from sqlite3 import connect, OperationalError
 from imdb import IMDb
+from urllib import urlretrieve
 
 class TestSchema:
 
@@ -210,12 +212,34 @@ class TestImdb:
         assert self.imdb.genres == ['Adventure', 'Western'], \
             "Referenced genres"
 
+class TestWeb:
+
+    """Test the Web class"""
+
+    def test_download_thumb(self):
+        """Ensure that downloading a thumb works correctly"""
+        ifile = "MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX95.jpg"
+        path = Web.download_thumb("http://ia.media-imdb.com/images/M/" + ifile)
+        ipath = os.path.join(Web.THUMB_DIR, ifile)
+        assert path == ipath, "Check what we think the path should be"
+        assert os.path.exists(path), "Check the returned path for a file"
+        os.remove(path)
+
+    def test_download_image(self):
+        """Ensure that downloading an image works correctly"""
+        ifile = "MV5BOTg1NTQyNjYzMV5BMl5BanBnXkFtZTYwMzA2MTk4._V1._SX300.jpg"
+        path = Web.download_image("http://ia.media-imdb.com/images/M/" + ifile)
+        ipath = os.path.join(Web.IMAGE_DIR, ifile)
+        assert path == ipath, "Check what we think the path should be"
+        assert os.path.exists(path), "Check the returned path for a file"
+        os.remove(path)
+
 #TODO:
 #
-#   download box image
 #   generate movie page
 #   generate movie listing page
 #   generate index page
+#   split code into modules
 
 class Schema:
 
@@ -389,6 +413,30 @@ class Imdb:
         return self.API1_PATTERN % (match.group(0), self.THUMB_X), \
                self.API1_PATTERN % (match.group(0), self.IMAGE_X)
 
+class Web:
+
+    """Interact with the web"""
+
+    THUMB_DIR = "thumbs"
+    IMAGE_DIR = "images"
+
+    @staticmethod
+    def _image_file(out_dir, url):
+        return os.path.join(out_dir, url.split("/")[-1])
+
+    @staticmethod
+    def download_thumb(url):
+        """Download a thumb from a url to an output dir"""
+        path = Web._image_file(Web.THUMB_DIR, url)
+        urlretrieve(url, path)
+        return path
+
+    @staticmethod
+    def download_image(url):
+        """Download an image from a url to an output dir"""
+        path = Web._image_file(Web.IMAGE_DIR, url)
+        urlretrieve(url, path)
+        return path
 
 # NOTES
 #
