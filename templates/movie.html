@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>${listing_cat}: ${listing_subcat}</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"></link>
+  </head>
+  <body id=movie onloadset=first>
+    <table class=detail>
+      <tr><th colspan=3 class=name width=1100 align=center valign=top><a name=first class=play href="${movie_path}" TVID=PLAY VOD>${file_title} <img src=../play.gif /></a></th></tr>
+      <tr>
+        <td valign=top rowspan=8 width=400><img src="{image_path}" class=boxart /></td>
+        <th colspan=2 class=title valign=top>{movie_title}{% if year %} (<span class=year>${year}</span>){% end %}</th>
+      </tr>
+      <tr><th width=150 valign=top>Runtime:</th><td class=runtime>${runtime}</td></tr>
+      {% if genres %}<tr><th valign=top>Genres:</th><td><ul class=genres>
+        {% for genre in genres %}<li><a href="idx_Genre_${genre}_01.html">Action</a></li>{% end %}
+      </ul></td></tr>{% end %}
+      {% if rating %}<tr><th valign=top>Rating:</th><td class=rating>${rating}</td></tr>{% end %}
+      {% if summary %}<tr><th valign=top>Summary:</th><td class=summary>${summary}</td></tr>{% end %}
+      {% if directors %}<tr><th valign=top>Directors:</th><td><ul class=directors>
+        {% for pid, name in directors %}<li><a href="idx_Director_${pid}_01.html">${name}</a></li>{% end %}
+      </ul></td></tr>{% end %}
+      {% if actors %}<tr><th valign=top>Actors:</th><td><ul class="actors">
+        {% for pid, name in actors %}<li><a href="idx_Actor_${pid}_01.html">${name}</a></li>{% end %}
+      </ul></td></tr>{% end %}
+    </table>
+    <br />
+    <center><table class=navigation>
+      <tr><td><a href="${listing_prev}" TVID="PGUP">Prev <img src="../vol_up.gif" /></a></td><td><a href="${listing_next}" TVID="PGDN">Next <img src="..//vol_down.gif" /></a></td></tr>
+      <tr><td><a href="index.html" TVID="ESC">Up to index <img src="../stop.gif" /></a></td><td><a href="index.html" TVID="HOME">Front Page <img src="../home.gif" /></a></td></tr>
+    </table></center>
+  </body>
+</html>
